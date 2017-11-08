@@ -52,14 +52,14 @@ public class VectoresEJ7 {
 
     }
     public static void cambiarFilas(){
-        for (int i = 0; i < Max; i++) {
-            for (int j = 0; j < Max; j++) {
-                if(i == numeroFilaUno){
-                    for (int h = 0; h < Max; h++) {
-                        matriz[numeroFilaUno][h] = vectorAuxUno[h];// es lo mismo de antes pero con mas vuelta
-                    }
-                }
-            }
+        int numero;
+        for (int j = 0; j < Max; j++) {
+            numero = vectorAuxUno[j];
+            matriz[numeroFilaUno][j] = numero;
+        }
+        for (int j = 0; j < Max; j++) {
+            numero = vectorAuxDos[j];
+            matriz[numeroFilaDos][j] = numero;
         }
 
     }
@@ -82,13 +82,3 @@ public class VectoresEJ7 {
     }
 
 }
-/*/int numero;
-        for (int j = 0; j < Max; j++) {
-            numero = vectorAuxUno[j];
-            matriz[numeroFilaUno][j] = numero;
-        }
-        for (int j = 0; j < Max; j++) {
-            numero = vectorAuxDos[j];
-            matriz[numeroFilaDos][j] = numero;
-        }
-/*/
