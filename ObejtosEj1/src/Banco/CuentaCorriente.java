@@ -1,4 +1,3 @@
-
 package Banco;
 
 /**
@@ -6,50 +5,97 @@ package Banco;
  * @author JaimeKata
  */
 public class CuentaCorriente {
-    private String numeroCuenta;
-    private String nombreCliente;
-    private double saldo;
-    private final static int numeroMinimo = 0;
-    private final static int numeroMaximo = 10;
-    
-    public CuentaCorriente(){
-        this.numeroCuenta = null;
-        this.nombreCliente = null;
-        this.saldo = 0; 
-    }
-    public CuentaCorriente(String nombreCliente, double saldo){
-        this.numeroCuenta = "00"+(int) Math.floor(Math.random() * (numeroMinimo - numeroMaximo) + numeroMaximo);
-        this.nombreCliente = nombreCliente;
+
+    private String numero;
+    private Double saldo;
+    private String cliente;
+    private static Integer siguiente = 1;
+
+   
+    public CuentaCorriente(Double saldo, String cliente) {
+        String num = "0000" + siguiente;
+        numero = num.substring(num.length() - 3);
         this.saldo = saldo;
+        this.cliente = cliente;
+        siguiente++;
     }
 
-    public String getNumeroCuenta() {
-        return numeroCuenta;
+    
+    public String getNumero() {
+        return numero;
     }
 
-    public void setNumeroCuenta(String numeroCuenta) {
-        this.numeroCuenta = numeroCuenta;
+  
+    public void setNumero(String numero) {
+        this.numero = numero;
     }
 
-    public double getSaldo() {
+    
+    public Double getSaldo() {
         return saldo;
     }
 
-    public void setSaldo(double saldo) {
+    
+    public void setSaldo(Double saldo) {
         this.saldo = saldo;
     }
 
-    public String getNombreCliente() {
-        return nombreCliente;
+    
+    public String getCliente() {
+        return cliente;
     }
 
-    public void setNombreCliente(String nombreCliente) {
-        this.nombreCliente = nombreCliente;
+   
+    public void setCliente(String cliente) {
+        this.cliente = cliente;
+    }
+
+  
+    public static Integer getSiguiente() {
+        return siguiente;
+    }
+
+    
+    public void ingresarEfectivo(Double importe) {
+        this.saldo = saldo + importe;
+    }
+    
+    public void borrarCuenta(){
+        cliente = (cliente + " CERRADA");
+        saldo = 0.0;
+    }
+
+    
+    public Boolean retirarEfectivo(Double importe) {
+        if (importe > this.saldo) {
+            return false;
+        } else {
+            this.saldo = saldo - importe;
+            return true;
+        }
+    }
+
+    public static CuentaCorriente fusion(CuentaCorriente cuenta1, CuentaCorriente cuenta2){
+        CuentaCorriente nueva = null;
+        if(cuenta1.cliente.equalsIgnoreCase(cuenta2.cliente) && !cuenta1.numero.equalsIgnoreCase(cuenta2.numero)){
+            nueva = new CuentaCorriente((cuenta1.saldo + cuenta2.saldo), cuenta1.cliente);
+            System.out.println("Cuenta fusionada con existo");
+            cuenta1.borrarCuenta();
+            cuenta2.borrarCuenta();
+        }else {
+            System.out.println("Las cuentas no pertenecen al mismo cliente");
+        }
+        return nueva;
     }
     
     @Override
     public String toString() {
-        return "CuentaCorriente[" + "Numero de Cuenta:" + numeroCuenta +", nombre del cliente:  "+nombreCliente+", saldo:" + saldo + "]";
+        return "Cuentacorriente [Cliente: "+cliente+" ,numero de cuenta: " + numero + " ,saldo: " + saldo + "]";
     }
+
     
+    public String visualiza() {
+        return "Cuentacorriente [Cliente: "+cliente+" ,numero de cuenta: " + numero + " ,saldo: " + saldo + "]";
+    }
+
 }

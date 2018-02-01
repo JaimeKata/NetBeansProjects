@@ -1,212 +1,197 @@
 package Banco;
 
-import java.util.Scanner;
-
 /**
  *
  * @author JaimeKata
  */
 public class Sucursal {
 
-    private static CuentaCorriente bbdd[];
+    public static void main(String[] args) {
+        // TODO Auto-generated method stub
+        CuentaCorriente cuenta1 = null, cuenta2 = null, nuevaCuenta = null;
+        CuentaCorriente[] cuentas;
+        cuentas = new CuentaCorriente[10];
+        String cliente;
+        Double saldo = 0.0;
 
-    private static final int Max = 10;
-
-    public Sucursal() {
-        this.bbdd = new CuentaCorriente[10];
-    }
-
-    public static void crearCuentaCorriente(String nombreCliente, double saldo) {
-        CuentaCorriente nuevaCuenta = new CuentaCorriente(nombreCliente, saldo);
-        altaCuenta(nuevaCuenta);
-    }
-
-    public static void altaCuenta(CuentaCorriente nuevaCuenta) {
-        for (int i = 0; i < Max; i++) {
-            if (bbdd.length == 0) {
-                bbdd[0] = nuevaCuenta;
-                System.out.println("Cuenta creada con exito");
-            } else {
-                bbdd[i + 1] = nuevaCuenta;
-                System.out.println("Cuenta creada con exito");
+        /*/
+        for (int i = 0; i < 2; i++) {
+            cliente = Leer.pedirCadena("Nombre del cliente: ");
+            saldo = Leer.pedirDouble("Saldo inicial: ");
+            cuentas[i] = new CuentaCorriente(saldo, cliente);
+        }
+        Leer.mostrarEnPantalla(cuentas.toString());
+        for (int i = 0; i < cuentas.length; i++) {
+            Leer.mostrarEnPantalla("" + cuentas[i]);
+            if (i < CuentaCorriente.getSiguiente() - 1) {
+                System.out.println((cuentas[i]));
             }
         }
-    }
+        /*/
+        //Menu
+        int opcion;
+        do {
+            menu();
 
-    public static void ingresarDinero(String numeroCuenta, double cantidad) {
-        double saldoAux = 0;
-        CuentaCorriente cuenta = null;
-        System.out.println("Tramitando operación...");
-        for (int i = 0; i < bbdd.length; i++) {
-            if (cuenta.getNumeroCuenta().equalsIgnoreCase(numeroCuenta) == true) {//Comprobamos que el numero de cuenta existe con el numero de alguna cuenta 
-                saldoAux = cuenta.getSaldo();
-                saldoAux = saldoAux + cantidad;
-                cuenta.setSaldo(saldoAux);
-                System.out.println("Operación realizada con exito");
-
-            } else {
-                System.out.println("ERROR, numero de cuenta erroneo");
+            opcion = Leer.pedirEntero("Seleccione una opcion: ");
+            Double importe = -1.0;
+            String numCuenta;
+            Boolean existe = false, saldosuf;
+            switch (opcion) {
+                case 1://Crear cuenta
+                    registrarCliente(cuentas);
+                    break;
+                case 2://visualizar cuentas
+                    mostrarCuentas(cuentas);
+                    break;
+                case 3://ingresar en cuenta
+                    ingresarEnCuenta(cuentas);
+                    break;
+                case 4://retirar efectivo
+                    retirarEfectivo(cuentas);
+                    break;
+                case 5://fusion de cuentas 
+                    fusionarCuentas(cuentas, cuenta1, cuenta2, nuevaCuenta);
+                    break;
+                case 6://borrado de cuentas
+                    borrarCuenta(cuentas);
+                    break;
             }
-        }
+        } while (opcion != 0);
+    }//main
 
-    }
+    public static void menu() {
+        Leer.mostrarEnPantalla("BIENVENIDO AL BANCO BBVA");
+        Leer.mostrarEnPantalla(" 1.- Crear cuenta");
+        Leer.mostrarEnPantalla(" 2.- Visualizar las cuentas");
+        Leer.mostrarEnPantalla(" 3.- Ingresar en una cuenta");
+        Leer.mostrarEnPantalla(" 4.- Sacar de una cuenta");
+        Leer.mostrarEnPantalla(" 5.- Fusionar cuentas");
+        Leer.mostrarEnPantalla(" 6.- Borrar cuenta");
+        Leer.mostrarEnPantalla(" 0.- Fin");
+    }//menu
 
-    public static void retirarDinero(String numeroCuenta, double cantidad) {
-        double saldoAux = 0;
-        CuentaCorriente cuenta = null;
-        System.out.println("Tramitando operación...");
-        for (int i = 0; i < bbdd.length; i++) {
-            if (cuenta.getNumeroCuenta().equalsIgnoreCase(numeroCuenta) == true) {//Comprobamos que el numero de cuenta existe con el numero de alguna cuenta
-                System.out.println("Comprobando saldo...");
-                if (cantidad > 0) {
-                    saldoAux = cuenta.getSaldo();
-                    if (saldoAux >= cantidad) {
-                        saldoAux = saldoAux - cantidad;
-                        cuenta.setSaldo(saldoAux);
-                        System.out.println("Operación realizada con exito");
-                    } else {
-                        System.out.println("ERROR, saldo insuficiente");
-                    }
-                } else {
-                    System.out.println("ERROR, no hay saldo");
+    public static void ingresarEnCuenta(CuentaCorriente cuentas[]) {
+        Double importe = 0.0;
+        String numCuenta;
+        Boolean existe = false;
+        System.out.println("INGRESAR DINERO EN CUENTA");
+        System.out.println("-------------------------");
+        do {
+            importe = Leer.pedirDouble("Teclee importe a ingresar: ");
+        } while (importe < 0);
+        numCuenta = Leer.pedirCadena("Código de cuenta en la que ingresar: ");
+        for (int i = 0; i < CuentaCorriente.getSiguiente() - 1; i++) {
+            if (cuentas[i].getCliente().contains("CERRADA") == false) {
+                if (cuentas[i].getNumero().equalsIgnoreCase(numCuenta)) {
+                    cuentas[i].ingresarEfectivo(importe);
+                    existe = true;
+                    System.out.println("Operación realizada con exito");
+                    importe = cuentas[i].getSaldo();
+                    System.out.println("Saldo actual: " + importe);
+
                 }
             } else {
-                System.out.println("ERROR, numero de cuenta erroneo");
+               existe = false;
             }
         }
-    }
+        if (!existe) {
+            Leer.mostrarEnPantalla("Cuenta no existente " + numCuenta+" o está cerrada");
+        }
+    }//Ingresar
 
-    public static void fusionarCuentas(String nombreCliente, String numeroCuenta1, String numeroCuenta2) {
+    public static void registrarCliente(CuentaCorriente cuentas[]) {
+        String cliente;
+        double saldo;
+        System.out.println("REGISTRO DE USUARIO");
+        System.out.println("-------------------");
+        if (CuentaCorriente.getSiguiente() == 11) {
+            Leer.mostrarEnPantalla("Límite de cuentas alcanzado");
+        } else {
+            cliente = Leer.pedirCadena("Nombre del cliente: ");
+            saldo = Leer.pedirDouble("Saldo inicial: ");
+            cuentas[CuentaCorriente.getSiguiente() - 1] = new CuentaCorriente(saldo, cliente);
+        }
+    }//registro
+
+    public static void mostrarCuentas(CuentaCorriente cuentas[]) {
+        System.out.println("CUENTAS ABIERTAS");
+        System.out.println("----------------");
+        for (int i = 0; i < cuentas.length; i++) {
+            if (cuentas[i] != null) {
+                Leer.mostrarEnPantalla(cuentas[i].visualiza());
+            }
+        }
+    }//mostrar cuentas
+
+    public static void retirarEfectivo(CuentaCorriente cuentas[]) {
+        String numCuenta;
+        double importe = 0.0;
+        boolean existe = false, saldoSuf = false;
         double saldo = 0;
-        CuentaCorriente cuenta = null;
-        System.out.println("Comprobando la existencia de las cuentas...");
-        for (int i = 0; i < bbdd.length; i++) {
-            if (cuenta.getNumeroCuenta().equalsIgnoreCase(numeroCuenta1) == true) {
-                saldo = cuenta.getSaldo();
-            } else {
-                System.out.println("ERROR, numero de cuenta erroneo");
+        System.out.println("RETIRAR DINERO DE UNA CUENTA");
+        System.out.println("----------------------------");
+        do {
+            importe = Leer.pedirDouble("Teclee importe a retirar: ");
+        } while (importe < 0);
+        numCuenta = Leer.pedirCadena("Código de cuenta en la que retirar dinero: ");
+        for (int i = 0; i < CuentaCorriente.getSiguiente() - 1; i++) {
+            if (cuentas[i].getNumero().equalsIgnoreCase(numCuenta)) {
+                saldoSuf = cuentas[i].retirarEfectivo(importe);
+                if (!saldoSuf) {
+                    Leer.mostrarEnPantalla("No hay saldo suficiente");
+                }
+                existe = true;
+                System.out.println("Operación realizada con exito");
+                saldo = cuentas[i].getSaldo();
+                System.out.println("El saldo actual es: " + saldo);
             }
         }
-        for (int i = 0; i < bbdd.length; i++) {
-            if (cuenta.getNumeroCuenta().equalsIgnoreCase(numeroCuenta2) == true) {
-                saldo = saldo + cuenta.getSaldo();
-            } else {
-                System.out.println("ERROR, numero de cuenta erroneo");
-            }
+        if (!existe) {
+            Leer.mostrarEnPantalla("Cuenta no existente " + numCuenta);
         }
-        System.out.println("Fusionando cuentas...");
-        crearCuentaCorriente(nombreCliente, saldo);
-        eliminarCuenta(numeroCuenta1);
-        eliminarCuenta(numeroCuenta2);
-    }
+    }//retirar pasta
 
-    public static void eliminarCuenta(String numeroCuenta) {
-        CuentaCorriente cuenta = null;
-        System.out.println("Comprobando la existencia de las cuentas...");
-        for (int i = 0; i < bbdd.length; i++) {
-            if (cuenta.getNumeroCuenta().equalsIgnoreCase(numeroCuenta) == true) {
-                bbdd[i] = null;
-            } else {
-                System.out.println("ERROR, numero de cuenta erroneo");
+    public static void fusionarCuentas(CuentaCorriente cuentas[], CuentaCorriente cuenta1, CuentaCorriente cuenta2, CuentaCorriente nuevaCuenta) {
+        String numCuenta;
+        boolean correcto1 = false;
+        boolean correcto2 = false;
+        System.out.println("FUSION DE CUENTAS");
+        System.out.println("-----------------");
+        do {
+            numCuenta = Leer.pedirCadena("Código de cuenta 1 que desea fusionar");
+            for (int i = 0; i < CuentaCorriente.getSiguiente() - 1; i++) {
+                if (cuentas[i].getNumero().equalsIgnoreCase(numCuenta) == true) {
+                    cuenta1 = cuentas[i];
+                    correcto1 = true;
+                }
+            }
+            numCuenta = Leer.pedirCadena("Código de cuenta 2 que desea fusionar");
+            for (int i = 0; i < CuentaCorriente.getSiguiente() - 1; i++) {
+                if (cuentas[i].getNumero().equalsIgnoreCase(numCuenta) == true) {
+                    cuenta2 = cuentas[i];
+                    correcto2 = true;
+                }
+            }
+        } while (correcto1 == false || correcto2 == false);
+       
+        nuevaCuenta = CuentaCorriente.fusion(cuenta1, cuenta2);
+        
+        cuentas[CuentaCorriente.getSiguiente() - 2] = nuevaCuenta;
+
+    }// fusionar cuentas
+
+    public static void borrarCuenta(CuentaCorriente cuentas[]) {
+        String numCuenta;
+        System.out.println("BORRAR CUENTA");
+        System.out.println("-------------");
+        numCuenta = Leer.pedirCadena("Código de cuenta que desea borrar");
+        for (int i = 0; i < CuentaCorriente.getSiguiente() - 1; i++) {
+            if (cuentas[i].getNumero().equalsIgnoreCase(numCuenta) == true) {
+                cuentas[i].borrarCuenta();
+                System.out.println("Cuenta borrada");
             }
         }
-        System.out.println("Eliminando cuentas...");
-    }
-    
-    public static void mostrarCuentasAbiertas(){
-        CuentaCorriente cuenta = null; 
-        for (int i = 0; i < bbdd.length; i++) {
-            System.out.println(cuenta.toString());
-        }
-    }
-    public static void mostrarCuenta(String numeroCuenta){
-        CuentaCorriente cuenta = null; 
-         for (int i = 0; i < bbdd.length; i++) {
-            if (cuenta.getNumeroCuenta().equalsIgnoreCase(numeroCuenta) == true) {
-                System.out.println(cuenta.toString());
-            }
-         }
-    }
-    
-    public static void menu() {
-        System.out.println("Bienvenido al banco BBVA");
-        System.out.println("------------------------");
-        System.out.println("MENU PRINCIPAL");
-        System.out.println("0. Salir");
-        System.out.println("1. Crear una cuenta");
-        System.out.println("2. Ingresar dinero");
-        System.out.println("3. Retirar dinero");
-        System.out.println("4. Fusionar cuenta");
-        System.out.println("5. Eliminar cuenta cuenta");
-        System.out.println("6. Ver cuentas abiertas");
-        System.out.println("7. Ver una cuenta");
-    }
+    }//borrar cuenta
 
-    public static void main(String[] args) {
-        int opcion;
-        String nombre;
-        double cantidad;
-        String numeroCuenta;
-        String numeroCuenta2;
-
-        Scanner entrada = new Scanner(System.in);
-        menu();
-        System.out.println("Selccione una opción: ");
-        opcion = entrada.nextInt();
-        switch (opcion) {
-            case 1:
-                System.out.println("CREAR NUEVO USUARIO");
-                System.out.println("Nombre: ");entrada.nextLine();
-                nombre = entrada.nextLine();
-                System.out.println("Cuanto dinero desea depositar: ");
-                cantidad = entrada.nextDouble();
-                crearCuentaCorriente(nombre, cantidad);
-                break;
-            case 2:
-                System.out.println("INGRESAR DINERO");
-                System.out.println("Digame su numero de cuenta: ");
-                numeroCuenta = entrada.nextLine();
-                System.out.println("¿Cuanto saldo desea depositar? ");
-                cantidad = entrada.nextDouble();
-                ingresarDinero(numeroCuenta, cantidad);
-                break;
-            case 3:
-                System.out.println("RETIRAR DINERO");
-                System.out.println("Digame su numero de cuenta: ");
-                numeroCuenta = entrada.nextLine();
-                System.out.println("¿Cuanto saldo desea retirar? ");
-                cantidad = entrada.nextDouble();
-                retirarDinero(numeroCuenta, cantidad);
-                break;
-            case 4:
-                System.out.println("FUSIONAR CUENTA");
-                System.out.println("Digame un nombre para la nueva cuenta: ");
-                nombre = entrada.nextLine();
-                System.out.println("Digame el numero de cuenta de la primera cuenta: ");
-                numeroCuenta = entrada.nextLine();
-                System.out.println("Digame el numero de cuenta de la segunda cuenta: ");
-                numeroCuenta2 = entrada.nextLine();
-                fusionarCuentas(nombre, numeroCuenta, numeroCuenta2);
-                break;
-            case 5:
-                System.out.println("ELIMINAR CUENTA");
-                System.out.println("Digame su numero de cuenta: ");
-                numeroCuenta = entrada.nextLine();
-                eliminarCuenta(numeroCuenta);
-                break;
-            case 6:
-                System.out.println("VER CUENTAS ABIERTAS");
-                mostrarCuentasAbiertas();
-                break;
-            case 7:
-                System.out.println("VER UNA CUENTA");
-                System.out.println("Digame su numero de cuenta: ");
-                numeroCuenta = entrada.nextLine();
-                mostrarCuenta(numeroCuenta);
-                break;
-            case 0: 
-                System.out.println("GRACIAS POR SU VISITA");
-                System.exit(1);
-        }
-    }
-}
+}//class
