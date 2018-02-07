@@ -10,6 +10,9 @@ import java.io.InputStreamReader;
  */
 public class GestionLibros {
 
+    private static int autoresRegistrados = 0;
+    private static int librosRegistrados = 0;
+
     public static void main(String[] args) throws IOException {
         Libro[] libros;
         libros = new Libro[10];
@@ -74,10 +77,11 @@ public class GestionLibros {
     }//registro autor
 
     public static void altaAutor(Autor nuevoAutor, Autor autores[]) {
-        for (int i = 0; i < autores.length; i++) {
+        for (int i = 0; i < 10; i++) {
             if (autores[i] == null) {
                 autores[i] = nuevoAutor;
                 System.out.println("-Autor registrado con exito-");
+                autoresRegistrados++;
                 break;//hago break para que no guarde el mismo autor en todas las posiciones vacias 
             }
         }
@@ -103,10 +107,11 @@ public class GestionLibros {
     }//registro libro
 
     public static void altaLibro(Libro libroNuevo, Libro libros[]) {
-        for (int i = 0; i < libros.length; i++) {
+        for (int i = 0; i < 10; i++) {
             if (libros[i] == null) {
                 libros[i] = libroNuevo;
                 System.out.println("-Libro registrado con exito-");
+                librosRegistrados++;
                 break;//hago break para que no guarde el mismo autor en todas las posiciones vacias 
             }
         }
@@ -114,10 +119,14 @@ public class GestionLibros {
 
     public static Autor buscaAutor(String nombreAutor, Autor autores[]) {//me aseguro de que el autor existe
         Autor autorLibro = null;
-        for (int i = 0; i < autores.length; i++) {
-            autorLibro = autores[i];
-            if (autorLibro.getNombre().equalsIgnoreCase(nombreAutor) == true) {
+        for (int i = 0; i < autoresRegistrados; i++) {
+            if (autores[i].getNombre().equals(nombreAutor) == true) {
+                autorLibro = autores[i];
             }
+        }
+        if (autorLibro == null) {
+            System.out.println("El autor no existe, vuelve a introducir el nombre");
+            modificarAutor(autores);
         }
         return autorLibro;
     }//busqueda Autor
@@ -138,17 +147,17 @@ public class GestionLibros {
 
     public static void visualizarAutores(Autor autores[]) {
         Autor autor = null;
-        for (int i = 0; i < autores.length; i++) {
+        for (int i = 0; i < autoresRegistrados; i++) {
             autor = autores[i];
-            System.out.println(autor.toString());
+            System.out.println(autor.cadenaAutor());
         }
     }//visualizar autores
 
     public static void visualizarLibros(Libro libros[]) {
         Libro libro = null;
-        for (int i = 0; i < libros.length; i++) {
+        for (int i = 0; i < librosRegistrados; i++) {
             libro = libros[i];
-            System.out.println(libro.toString());
+            System.out.println(libro.cadenaLibro());
         }
     }//visualizar libros
 
@@ -177,14 +186,17 @@ public class GestionLibros {
         }
         System.out.println("LIBRO MODIFICADO");
     }//modificar libro1
-    
 
     public static Libro buscaLibro(String titulo, Libro libros[]) {//me aseguro de que el libro existe
         Libro libroMod = null;;
-        for (int i = 0; i < libros.length; i++) {
-            libroMod = libros[i];
-            if (libroMod.getTitulo().equalsIgnoreCase(titulo) == true) {
+        for (int i = 0; i < librosRegistrados; i++) {
+            if (libros[i].getTitulo().equalsIgnoreCase(titulo) == true) {
+                libroMod = libros[i];
             }
+        }
+        if (libroMod == null) {
+            System.out.println("El autor no existe, vuelve a introducir el nombre");
+            modificarLibro(libros);
         }
         return libroMod;
     }//busqueda libro
