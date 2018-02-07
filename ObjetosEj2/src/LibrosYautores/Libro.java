@@ -48,7 +48,7 @@ public class Libro {
         this.cantidad = cantidad;
     }
     public String cadenaLibro(){
-        return  "Libro[ Titulo: "+titulo+" ,"+autor.cadenaAutor()+", precio: "+precio+" ,cantidad: "+cantidad+"]";
+        return  "Libro[ Titulo: "+titulo+", "+autor.cadenaAutor()+", precio: "+precio+"€ ,cantidad: "+cantidad+" unidades]";
     }
     
 }

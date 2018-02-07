@@ -120,7 +120,7 @@ public class GestionLibros {
     public static Autor buscaAutor(String nombreAutor, Autor autores[]) {//me aseguro de que el autor existe
         Autor autorLibro = null;
         for (int i = 0; i < autoresRegistrados; i++) {
-            if (autores[i].getNombre().equals(nombreAutor) == true) {
+            if (autores[i].getNombre().equalsIgnoreCase(nombreAutor) == true) {
                 autorLibro = autores[i];
             }
         }
