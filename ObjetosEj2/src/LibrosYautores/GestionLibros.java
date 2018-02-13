@@ -10,7 +10,7 @@ import java.io.InputStreamReader;
  */
 public class GestionLibros {
 
-    private static int autoresRegistrados = 0;
+    private static int autoresRegistrados = 0;//se usa para controlar el numero de autores registrados y evitar el null pointer
     private static int librosRegistrados = 0;
 
     public static void main(String[] args) throws IOException {
@@ -195,7 +195,7 @@ public class GestionLibros {
             }
         }
         if (libroMod == null) {
-            System.out.println("El autor no existe, vuelve a introducir el nombre");
+            System.out.println("El titulo no existe, vuelve a introducir el nombre");
             modificarLibro(libros);
         }
         return libroMod;
