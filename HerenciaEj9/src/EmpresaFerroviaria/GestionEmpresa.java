@@ -49,15 +49,12 @@ public class GestionEmpresa {
                         switch (opcionModificar) {
                             case 1:
                                 modificarEmpleado(empleados);
-                                
-                                break;
+                                 break;
                             case 2:
                                 modificarAdministrativo(empleados);
-                                
-                                break;
+                                 break;
                             case 3:
                                 modificarMaquinista(empleados);
-                                
                                 break;
                         }
                     break;
@@ -136,7 +133,10 @@ public class GestionEmpresa {
         }
     }//alta empleado, es un metodo generico
     public static void modificarEmpleado(Empleado empleados[]){
-        
+        String nombre = null; 
+        double sueldo = 0.0; 
+        int edad = 0; 
+        Empleado empleadoMod = null; 
     }
     public static void modificarAdministrativo(Empleado empleados[]){
         
