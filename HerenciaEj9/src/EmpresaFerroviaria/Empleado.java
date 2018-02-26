@@ -47,6 +47,12 @@ public class Empleado {
     }
     
     public String cadenaEmpleado(){
-        return "Empleado[ Nombre: "+nombre+" ,sueldo: "+sueldo+" ,edad: "+edad+"]";
+        return "Empleado Nombre: "+nombre+", sueldo: "+sueldo+"€, edad: "+edad+" ";
     }
+
+    @Override
+    public String toString() {
+        return "Empleado Nombre: "+nombre+", sueldo: "+sueldo+"€, edad: "+edad;
+    }
+    
 }

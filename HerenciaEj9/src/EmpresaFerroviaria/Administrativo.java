@@ -37,6 +37,12 @@ public class Administrativo extends Empleado {
     }
     
     public String cadenaAdministrativo(){
-        return "estudios: "+estudios+" ,numero de ordenador: "+numeroOrdenador;
+        return "estudios: "+estudios+", numero de ordenador: "+numeroOrdenador;
     }
+
+    @Override
+    public String toString() {
+        return super.toString()+" estudios: "+estudios+", numero de ordenador: "+numeroOrdenador;
+    }
+    
 }

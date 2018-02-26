@@ -37,6 +37,12 @@ public class Maquinista extends Empleado {
     }
     
     public String cadenaMaquinista(){
-        return "numero de maquina: "+numeroMaquina+" ,años en ella: "+tiempoEnMaquina;
+        return "numero de maquina: "+numeroMaquina+", años en ella: "+tiempoEnMaquina;
     }
+
+    @Override
+    public String toString() {
+        return super.toString() +" numero de maquina: "+numeroMaquina+", años en ella: "+tiempoEnMaquina;
+    }
+    
 }

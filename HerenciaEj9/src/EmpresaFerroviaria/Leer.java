@@ -25,7 +25,7 @@ public class Leer {
                 dato = dataIn.readLine();
                 error = false;
             } catch (IOException e) {
-                mostrarEnPantalla("Vuelve a introducir el dato, por favor: ");
+                mostrarEnPantalla("Vuelve a introducir el dato, por favor ");
                 error = true;
             }
         }
